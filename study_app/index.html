@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <style>
+        body {
+            font-family: 'Open Sans';font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id ="inital_view" class="container">
+        <h1>Pomodoro Timer</h1>
+        <div class = "inputs">
+            <div id="work_button">
+                <p>Work Time (minutes)</p>
+                <input type="text" id="work_time" placeholder="25">
+            </div>
+            <div>
+                <p>Repitions</p>
+                <input type="text" id="reps" placeholder="4">
+                <p>times</p>
+            </div>
+
+            <div>
+                <p>Break Time (minutes)</p>
+                <input type="text" id="break_time" placeholder="5">
+                
+            </div>
+            <div id="stats_box">
+                <div id="work_ratio">
+                    <p>Productivity Level:</p>
+                    <p id = "ratio">83%</p>
+                </div>
+                <div id="total_time">
+                    <p>Total Time Worked:</p>
+                    <p id="total_time_display">100 minutes</p>
+                </div>
+
+            </div>
+            <div>
+                
+                <button id = "fake_start_button" class="start_button">Start</button>
+            </div>
+        </div>
+       
+        <div id="hide">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=2JgTUfyLFsAMtuqp&autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    
+        </div>
+    </div>
+    <div id ="timer_view" class="timer">
+        <div id ="current_mode">placeholder</div>
+        <div id = "reps_display">Reps Remaining: </div>
+        <div id="timer_display">25:00</div>
+        <button id="real_start_button" class="start_button">Start</button>
+      
+    </div>
+    <script src="script.js"></script>
+    
+    <audio id="bell" src="bell.mp3"></audio>
+</body>
+</html>
+
