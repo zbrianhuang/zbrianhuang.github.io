@@ -16,6 +16,7 @@ const returnButton = document.getElementById("return_button");
 const currentMode = document.getElementById("current_mode");
 const total_time_worked_display = document.getElementById("total_time_display");
 const hide = document.getElementById("hide");
+const bellsound = document.getElementById("bell");
 // Timer variables
 let workTime = 25*60; // 25 minutes in seconds
 let breakTime = 5*60; // 5 minutes in seconds
@@ -77,12 +78,15 @@ function updateTimer() {
       repsDisplay.textContent = "Reps Remaining: "+reps;
       if (reps === 0) {
         currentTimer = "done";
-        timerDisplay.textContent = "Done!";
+        timerDisplay.textContent = "Done :D";
+        currentMode.textContent="";
+        repsDisplay.style.display="none";
+
         toggleTimer();
       
         done = true;
-        startButton.textContent = ":D";
-        startButton.disabled = true;
+        startButton.textContent = "";
+        
         return;
       } else {
         currentMode.textContent = "BREAK";
@@ -146,31 +150,75 @@ function getRatioColor(ratioNum){
   return returnStr;
 
 }
-
 function gradientBackground() {
-  const totalTime = (workTime * reps + (breakTime * reps + 1)) * 100;
-  let totalTimeElapsed = 0;
+  let totalTimeElapsed=0;
+
+  const totalTime = Math.floor((parseFloat(workTime) * parseFloat(reps) + parseFloat(breakTime) * (parseFloat(reps) + 1)) * 100);
+
+  console.log(totalTime);
   let red = 0;
   let green = 0;
   let blue = 0;
+  let red2 = 0;
+  let green2 = 0;
+  let blue3 = 0;
   let step = 1;
 
+  function goUp(percentComplete,stage){
+    return Math.floor(255*(percentComplete-(stage-0.2))/0.2);
+  }
+  function goDown(percentComplete,stage){
+    return Math.floor(255-(255*(percentComplete-(stage-0.2))/0.2))
+  }
+  const MAX = 255;
   function updateBackground() {
     // Increment totalTimeElapsed by one millisecond
     totalTimeElapsed += 1;
 
     // Calculate percentComplete
     const percentComplete = totalTimeElapsed / totalTime;
+    
+    
 
     // Update RGB values based on percentComplete
-    if (percentComplete < 0.33) {
-      red += step;
-    } else if (percentComplete < 0.67) {
-      green += step;
-    } else {
-      blue += step;
-    }
+    if(percentComplete<0.2){
+      red = MAX;
+      green = goUp(percentComplete,0.2);
+      blue = 0;
+      red2 = goDown(percentComplete,0.2);
+      green2 = MAX;
+      blue2 = 0;
+    }else if(percentComplete<0.4){
+      
+      red = goDown(percentComplete,0.4);
+      green = MAX;
+      blue= 0;
+      red2 =0;
+      green2 = MAX;
+      blue2 = goUp(percentComplete,0.4);
 
+    }else if(percentComplete<0.6){
+      red = 0;
+      green = MAX;
+      blue= goUp(percentComplete,0.6);
+      red2 = 0;
+      green2 = goDown(percentComplete,0.6);
+      blue2 = MAX;
+    }else if (percentComplete<0.8){
+      red = 0;
+      green = goDown(percentComplete,0.8);
+      blue = MAX;
+      red2 = goUp(percentComplete,0.8);
+      green2 = 0;
+      blue2 = MAX;
+    }else if(percentComplete<1){
+      red = goUp(percentComplete,1);
+      green = goUp(percentComplete,1);
+      blue = MAX;
+      red2 = MAX;
+      green2 = goUp(percentComplete,1);
+      blue2 = MAX;
+    }
     // Limit the RGB values to stay within the 0-255 range
     red = Math.min(255, red);
     green = Math.min(255, green);
@@ -178,20 +226,24 @@ function gradientBackground() {
 
     // Construct the RGB color strings for color1 and color2
     const color1 = `rgb(${red},${green},${blue})`;
-    const color2 = `rgb(${blue},${green},${red})`;
+    const color2 = `rgb(${red2},${green2},${blue2})`;
 
     // Set the background color with the dynamic RGB values for a linear gradient
     document.body.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
 
-    if (percentComplete <= 1) {
-      setTimeout(updateBackground, 1); // Update every millisecond
+    if (percentComplete < 1) {
+      setTimeout(updateBackground, 10); // Update every millisecond if the animation is not complete
     } else {
       // Animation complete, do any necessary clean-up here
     }
   }
 
+  // Start the animation by calling the updateBackground function
   updateBackground();
 }
+
+
+
 
 
 
