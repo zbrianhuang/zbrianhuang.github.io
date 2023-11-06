@@ -36,20 +36,35 @@ function updateTimerDisplay() {
   timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Start or pause the timer
+let timerID;
+let startTime;
+let elapsedTime = 0;
+let isRunning = false;
+
 function toggleTimer() {
-  repsDisplay.textContent = "Reps Remaining: "+reps;
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
+  repsDisplay.textContent = "Reps Remaining: " + reps;
+
+  if (isRunning) {
+    cancelAnimationFrame(timerID);
+    isRunning = false;
     startButton.textContent = "Start";
   } else {
-    timerInterval=null;
-    timerInterval = setInterval(updateTimer, 1000);
+    startTime = performance.now() - elapsedTime;
+    isRunning = true;
+    requestAnimationFrame(updateTimer);
     startButton.textContent = "Pause";
   }
 }
-async function playBellNTimes(n) {
+
+function updateTimer(timestamp) {
+  elapsedTime = timestamp - startTime;
+  // You can update your display here with the elapsed time or any other logic.
+
+  if (isRunning) {
+    timerID = requestAnimationFrame(updateTimer);
+  }
+}
+nc function playBellNTimes(n) {
   for (let i = 0; i < n; i++) {
     await playBell(); // Play the audio
   }
