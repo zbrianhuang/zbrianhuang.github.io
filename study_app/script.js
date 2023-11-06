@@ -64,7 +64,7 @@ function updateTimer(timestamp) {
     timerID = requestAnimationFrame(updateTimer);
   }
 }
- function playBellNTimes(n) {
+async function playBellNTimes(n) {
   for (let i = 0; i < n; i++) {
     await playBell(); // Play the audio
   }
