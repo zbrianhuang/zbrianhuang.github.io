@@ -225,8 +225,8 @@ function gradientBackground() {
     blue = Math.min(255, blue);
 
     // Construct the RGB color strings for color1 and color2
-    const color1 = `rgb(${red},${green},${blue},0.5)`;
-    const color2 = `rgb(${red2},${green2},${blue2},0.5)`;
+    const color2 = `rgb(${red},${green},${blue},0.5)`;
+    const color1 = `rgb(${red2},${green2},${blue2},0.5)`;
 
     // Set the background color with the dynamic RGB values for a linear gradient
     document.body.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
