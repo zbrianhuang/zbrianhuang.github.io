@@ -41,25 +41,23 @@ let startTime;
 let elapsedTime = 0;
 let isRunning = false;
 
+let timerInterval;
 function toggleTimer() {
-  repsDisplay.textContent = "Reps Remaining: " + reps;
-
-  if (isRunning) {
-    cancelAnimationFrame(timerID);
-    isRunning = false;
+  repsDisplay.textContent = "Reps Remaining: "+reps;
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
     startButton.textContent = "Start";
   } else {
-    startTime = performance.now() - elapsedTime;
-    isRunning = true;
-    requestAnimationFrame(updateTimer);
+    timerInterval=null;
+    timerInterval = setInterval(updateTimer, 1000);
     startButton.textContent = "Pause";
   }
 }
-
-function updateTimer(timestamp) {
+function updateTimer1(timestamp) {
   elapsedTime = timestamp - startTime;
   // You can update your display here with the elapsed time or any other logic.
-
+  updateTimer1();
   if (isRunning) {
     timerID = requestAnimationFrame(updateTimer);
   }
@@ -81,14 +79,14 @@ async function playBell() {
 }
 // Update the timer every second
 function updateTimer() {
-  
+
   remainingTime--;
   updateTimerDisplay();
 
   if (remainingTime === 0||remainingTime < 0) {
     playBellNTimes(2);
     if (currentTimer === "work") {
-      
+
       reps--;
       repsDisplay.textContent = "Reps Remaining: "+reps;
       if (reps === 0) {
@@ -98,20 +96,20 @@ function updateTimer() {
         repsDisplay.style.display="none";
 
         toggleTimer();
-      
+
         done = true;
         startButton.textContent = "";
-        
+
         return;
       } else {
         currentMode.textContent = "BREAK";
-        
+
         currentTimer = "break";
         remainingTime = breakTime;
       }
     } else if (currentTimer === "break") {
       currentMode.textContent = "WORK";
-     
+
       currentTimer = "work";
       remainingTime = workTime;
     }
@@ -128,19 +126,19 @@ function formatTime(input) {
 
 function updateRatio() {
   // Get the valuesfrom the textboxes
-  
+
   let ratioNum = 0;
-  
+
     ratioNum = workTime/(workTime+breakTime);
-  
+
   if((workTime===0&&breakTime!=0)||workTime!=0){
   ratioDisplay.textContent = Math.floor(ratioNum*100)+"%";
-  
+
   ratioDisplay.style.color = getRatioColor(ratioNum);
   }else{
     ratioDisplay.style.color  = "rgb(255,0,0,1)";
   }
-  
+
   // Update the content in the output div
 }
 
@@ -161,7 +159,7 @@ function getRatioColor(ratioNum){
     red=255-(255*ratioNum/2);
   }
   returnStr +="rgb("+red+","+green+",0,1)";
-  
+
   return returnStr;
 
 }
@@ -192,8 +190,8 @@ function gradientBackground() {
 
     // Calculate percentComplete
     const percentComplete = totalTimeElapsed / totalTime;
-    
-    
+
+
 
     // Update RGB values based on percentComplete
     if(percentComplete<0.2){
@@ -204,7 +202,7 @@ function gradientBackground() {
       green2 = MAX;
       blue2 = 0;
     }else if(percentComplete<0.4){
-      
+
       red = goDown(percentComplete,0.4);
       green = MAX;
       blue= 0;
