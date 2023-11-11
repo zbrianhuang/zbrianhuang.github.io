@@ -129,6 +129,18 @@ body, p, h1, input, button {
     border-radius: 5px;
     text-align: center;
   }
-  
+#error{
+  display: none;
+  color:red;
+}
 
-    
+#progress {
+  width: 100%;
+  background-color: rgb(0,0,0,0);
+}
+
+#bar {
+  width: 1%;
+  height: 30px;
+  background-color: white;
+}

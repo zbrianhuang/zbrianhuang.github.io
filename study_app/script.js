@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 const timerDisplay = document.getElementById("timer_display");
 const initStartButton = document.getElementById("fake_start_button");
-const startButton = document.getElementById("real_start_button");
 const initialView = document.getElementById("inital_view");
 const timerView = document.getElementById("timer_view");
 const workValue = document.getElementById("work_time");
@@ -12,11 +11,11 @@ const breakValue = document.getElementById("break_time");
 const repsValue = document.getElementById("reps");
 const repsDisplay = document.getElementById("reps_display");
 const ratioDisplay = document.getElementById("ratio");
-const returnButton = document.getElementById("return_button");
 const currentMode = document.getElementById("current_mode");
 const total_time_worked_display = document.getElementById("total_time_display");
 const hide = document.getElementById("hide");
 const bellsound = document.getElementById("bell");
+const errorBlurb = document.getElementById("error");
 // Timer variables
 let workTime = 25*60; // 25 minutes in seconds
 let breakTime = 5*60; // 5 minutes in seconds
@@ -24,44 +23,86 @@ let breakTime = 5*60; // 5 minutes in seconds
 let reps = 4; // Number of repetitions
 let totalReps = reps;
 let currentTimer = "work"; // Indicates if it's work or break time
-let timerInterval;
+let totalTimeElapsed=0;
 let remainingTime = workTime;
 let done = false;
 
 
 // Update the timer display
-function updateTimerDisplay() {
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
-  timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
 let timerID;
 let startTime;
 let elapsedTime = 0;
-let isRunning = false;
+let isRunning = true;
+var isDone = false;
 
-let timerInterval;
-function toggleTimer() {
-  repsDisplay.textContent = "Reps Remaining: "+reps;
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    startButton.textContent = "Start";
-  } else {
-    timerInterval=null;
-    timerInterval = setInterval(updateTimer, 1000);
-    startButton.textContent = "Pause";
+function updateTimerDisplay() {
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = Math.floor(remainingTime % 60);
+
+  timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  document.title = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`+ "-"+currentTimer.toUpperCase()+ " Pomodoro Timer";
+}
+
+
+function startTimer(){
+  var interval = 10; // ms
+  var expected = Date.now() + interval;
+  setTimeout(step, interval);
+  function step() {
+    var dt = Date.now() - expected; // the drift (positive for overshooting)
+    if (dt > interval) {
+        // something really bad happened. Maybe the browser (tab) was inactive?
+        // possibly special handling to avoid futile "catch up" run
+    }
+    if(!isDone){
+      updateTimer();
+    
+    }
+
+    expected += interval;
+    setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+}
+}
+function updateTimer() {
+  totalTimeElapsed++;
+  remainingTime-=0.01;
+  if(reps!=0){
+  updateTimerDisplay();
+  }
+
+  if (remainingTime === 0||remainingTime < 0) {
+    if(reps!=0){
+    playBellNTimes(2);
+    }
+    if (currentTimer === "work") {
+      
+      reps--;
+      repsDisplay.textContent = "Reps Remaining: "+reps;
+      if (reps === 0) {
+        currentTimer = "done";
+        timerDisplay.textContent = "Done!";
+        document.title = "Pomodoro Timer";
+        isDone= true;
+        done = true;
+        currentMode.textContent = "";
+        repsDisplay.textContent = "";
+        
+        return;
+      } else {
+        currentMode.textContent = "BREAK";
+        
+        currentTimer = "break";
+        remainingTime = breakTime;
+      }
+    } else if (currentTimer === "break") {
+      currentMode.textContent = "WORK";
+     
+      currentTimer = "work";
+      remainingTime = workTime;
+    }
   }
 }
-function updateTimer1(timestamp) {
-  elapsedTime = timestamp - startTime;
-  // You can update your display here with the elapsed time or any other logic.
-  updateTimer1();
-  if (isRunning) {
-    timerID = requestAnimationFrame(updateTimer);
-  }
-}
+
 async function playBellNTimes(n) {
   for (let i = 0; i < n; i++) {
     await playBell(); // Play the audio
@@ -77,44 +118,6 @@ async function playBell() {
     bellsound.play();
   });
 }
-// Update the timer every second
-function updateTimer() {
-
-  remainingTime--;
-  updateTimerDisplay();
-
-  if (remainingTime === 0||remainingTime < 0) {
-    playBellNTimes(2);
-    if (currentTimer === "work") {
-
-      reps--;
-      repsDisplay.textContent = "Reps Remaining: "+reps;
-      if (reps === 0) {
-        currentTimer = "done";
-        timerDisplay.textContent = "Done :D";
-        currentMode.textContent="";
-        repsDisplay.style.display="none";
-
-        toggleTimer();
-
-        done = true;
-        startButton.textContent = "";
-
-        return;
-      } else {
-        currentMode.textContent = "BREAK";
-
-        currentTimer = "break";
-        remainingTime = breakTime;
-      }
-    } else if (currentTimer === "break") {
-      currentMode.textContent = "WORK";
-
-      currentTimer = "work";
-      remainingTime = workTime;
-    }
-  }
-}
 function formatTime(input) {
   let minutes = Math.floor(input / 60);
   let seconds = input % 60;
@@ -128,7 +131,6 @@ function updateRatio() {
   // Get the valuesfrom the textboxes
 
   let ratioNum = 0;
-
     ratioNum = workTime/(workTime+breakTime);
 
   if((workTime===0&&breakTime!=0)||workTime!=0){
@@ -163,18 +165,18 @@ function getRatioColor(ratioNum){
   return returnStr;
 
 }
+
 function gradientBackground() {
-  let totalTimeElapsed=0;
 
-  const totalTime = Math.floor((parseFloat(workTime) * parseFloat(reps) + parseFloat(breakTime) * (parseFloat(reps) + 1)) * 100);
 
-  console.log(totalTime);
+  const totalTime = Math.floor((parseFloat(workTime) * parseFloat(reps) + parseFloat(breakTime) * (parseFloat(reps) - 1)) * 100);
+
   let red = 0;
   let green = 0;
   let blue = 0;
   let red2 = 0;
   let green2 = 0;
-  let blue3 = 0;
+  let blue2 = 0;
   let step = 1;
 
   function goUp(percentComplete,stage){
@@ -184,14 +186,21 @@ function gradientBackground() {
     return Math.floor(255-(255*(percentComplete-(stage-0.2))/0.2))
   }
   const MAX = 255;
+  var elem = document.getElementById("bar");
   function updateBackground() {
     // Increment totalTimeElapsed by one millisecond
-    totalTimeElapsed += 1;
-
+ 
     // Calculate percentComplete
     const percentComplete = totalTimeElapsed / totalTime;
 
-
+    
+    if(percentComplete<=1){
+      console.log(percentComplete);
+        
+        elem.style.width = (percentComplete*100) + "%";
+        elem.innerHTML = Math.floor(percentComplete*100) + "%";
+      
+    }
 
     // Update RGB values based on percentComplete
     if(percentComplete<0.2){
@@ -261,9 +270,6 @@ function gradientBackground() {
 
 
 
-
-
-
 function returnToMainScreen(){
   initialView.style.display = "block";
   timerView.style.display = "none";
@@ -303,16 +309,29 @@ breakValue.addEventListener("input",()=>{
   updateRatio();
 });
 initStartButton.addEventListener("click", () =>{
-  toggleTimer();
-  goToTimerScreen();
-  gradientBackground();
-});
-// Start button click event
-startButton.addEventListener("click", () => {
-  if(!done){
-    toggleTimer();
+  if(validateInput()){
+    startTimer();
+    goToTimerScreen();
+    gradientBackground();
+  }else{
+    errorBlurb.style.display="block";
+   
   }
 });
+function validateInput(){
+  if(workTime<0.0006){
+    return false;
+  }
+  if(reps%1!=0&&reps<1){
+    return false;
+  }
+  if(breakTime<0){
+    console.log(":D");
+    return false;
+  }
+  return true;
+}
+// Start button click event
 
 /*
 returnButton.addEventListener("click",()=>{
