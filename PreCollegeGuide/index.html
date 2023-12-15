@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-College Info</title>
+    <!-- Add any additional meta tags, stylesheets, or other resources here -->
+    
+</head>
+<body>
+    <header>
+        <h1>Guide to Pre-College Programs</h1>
+    </header>
+    <main>
+        <div id="wrapper">
+            <div class="article">
+                <p>Welcome to your guide to Pre-college programs!</p>
+                <p>Click each box to learn more!</p>
+            </div>
+            <div class="article">
+                <button type="button" class="collapsible">What can a college education do you for you?</button>
+                <div class="content">
+                    <p>College education can help you succeed in the future:</p>
+                    <ul>
+                        <li>Opens up career oppurtunities</li>
+                        <li>Increases earning potential</li>
+                        <li>Gain valuable soft skills</li>
+                        <img src="Income.jpg">
+                        <!-- Add more information here -->
+                    </ul>
+                </div>
+            </div>
+            <div class="article">
+                <button type="button" class="collapsible">Is a pre-college program right for you?</button>
+                <div class="content">
+                    
+                    <p>Get a taste of college life before even graduating high school!</p>
+                    <p>Earn college credits, and help lower your college tuition debt!</p>
+                   
+                    <p>Pre-college is for everyone!</p>
+                    <!-- Add more details about these programs -->
+                </div>
+            </div>
+            <div class="article">
+                <button type="button" class="collapsible">What are Dual Enrollment & Early-College Programs?</button>
+                <div class="content">
+                    <p>Dual enrollment programs allow high schoolers to take college courses alongside other college students!</p>
+                    <p>Early-college creates a supportive community and low-rish environment for talented students to excel at a college-level!</p>
+                    <p>One student says,"[Early-College] really helped me to know resources that I never would have looked into otherwise."</p>
+
+                   <img src = "Time1.png">
+                   <p>Get more free time!</p>
+                   
+                </div>
+            </div>
+
+            <div class="article">
+                <button type="button" class="collapsible">Advanced Placement (AP) and International Baccalaureate (IB)</button>
+                <div class="content">
+                    <p>AP offers 38 college-level classes for high school students!</p>
+                    <p>IB program provides a globally recognized education!</p>
+                    <p>Get Credits by scoring well on their exams!</p>
+                    <img src = "AP.png">
+                    <!-- More information about AP -->
+                </div>
+            </div>
+
+            
+        </div>
+       
+    </main>
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

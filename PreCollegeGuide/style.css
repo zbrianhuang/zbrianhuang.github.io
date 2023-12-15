@@ -46,6 +46,12 @@ header{
 .glossary_img{
     margin-right: 500px;
 }
+img {
+    width: 100%; /* Set the width to 100% of its container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below the image */
+    max-width: 100%; /* Ensure the image doesn't exceed its original size */
+  }
 .article{
     color:white;
     margin-top: 50px;
@@ -101,3 +107,24 @@ table {
    
     
 }
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding:18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition:2s;
+  }
+  .content{
+  
+    font-size:15px;
+    display:none;
+    
+    max-height: 1;
+    overflow:hidden;
+    transition: max-height 0.5s ease-out;
+  }
