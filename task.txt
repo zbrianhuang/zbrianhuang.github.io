@@ -1,0 +1,17 @@
+Present your work in a professional, engaging, and appealing manner. Your website will be linked from the HCI+D course web page, and previous students have used their websites to talk about their project for their job search and interviews!
+
+You must create and maintain a website documenting your project. Your site should tell the story of your project’s development in a clear and compelling manner. Do not assume any prior knowledge of your project – your website should be easily understood by someone who is completely unaffiliated with NTU. Ideally, this website will be a tool that you can use to communicate your design and prototyping skills to potential employers. Your website should be responsive, logically structured, and aesthetically appealing.
+
+See the grading criteria (below) for a list of the elements that must be represented on your website. Below is a list of assignments that must be included on your site (including presentation slides and prototypes), the assignment numbers are for your reference and ​should not be on the site​​.
+
+​Needfinding (Assignment #1)
+Point of Views and HWMs (Assignment #2) 
+Low-Fidelity Prototype (Assignment #3)
+​Medium-fi Prototype v1 (Assignment #4)
+Group Heuristic Evaluation (Assignment #8, link to the report for your group)
+​​Medium-fi Prototype v2 (Assignment #8)
+Hi-fi Prototype v1 (Assignment #9)
+Usability Testing (Assignment #10)
+Hi-fi prototype v2 and demo video (Assignment #11)
+​Poster (Assignment #12) 
+How AI tools was used 
