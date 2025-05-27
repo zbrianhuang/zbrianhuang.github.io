@@ -6,9 +6,9 @@
 }
 
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #e74c3c;
+    --primary-color: #B3D374;
+    --secondary-color: #FFFAD2;
+    --accent-color: #FFA280;
     --text-color: #333;
     --light-bg: #f5f6fa;
     --white: #ffffff;
@@ -207,4 +207,3 @@ footer {
 .pdf-link i {
     font-size: 1.2rem;
 }
-
